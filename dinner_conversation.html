@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dinner Date Conversation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 800px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      display: flex;
+      align-items: flex-end;
+      max-width: 80%;
+    }
+
+    .message.maher {
+      align-self: flex-start;
+    }
+
+    .message.ai {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      flex-shrink: 0;
+      margin: 0 10px;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bubble {
+      background: #eef1f4;
+      padding: 12px 16px;
+      border-radius: 16px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .message.ai .bubble {
+      background: #e8f5ff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.maher .bubble {
+      border-bottom-left-radius: 4px;
+    }
+
+    .name {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      .chat-container {
+        padding: 14px;
+      }
+
+      .message {
+        max-width: 100%;
+      }
+
+      .bubble {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat">
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          こんばんは。今日は来（き）てくれて、ありがとう。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          こんばんは。こちらこそ、誘（さそ）ってくれてありがとう。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          このレストラン、どう？ちょっと静（しず）かでいいでしょう？
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          うん、とてもいいね。雰囲気（ふんいき）も好き。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          よかった！実（じつ）は、三回（さんかい）も下見（したみ）したんだ。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          え？そんなに？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          うん。一回目（いっかいめ）は道（みち）に迷（まよ）って、二回目（にかいめ）は休（やす）みで、三回目（さんかいめ）でやっと成功（せいこう）。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          はは、それは大変（たいへん）だったね。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          でも、君（きみ）が笑（わら）ってくれたから、全部（ぜんぶ）OK。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          （笑）優（やさ）しいね。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          何（なに）を食（た）べたい？おすすめもあるよ。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          うーん…パスタが食（た）べたいかな。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          いいね。じゃあ、僕（ぼく）はステーキにする。筋肉（きんにく）のため。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          そんなに筋肉、必要（ひつよう）？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          うん。重（おも）いドアを開（あ）けるときとか。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          （笑）それだけ？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          あと、将来（しょうらい）の夢（ゆめ）のため。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          へえ、どんな夢？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          毎日（まいにち）おいしいご飯（はん）を食（た）べて、楽（たの）しく話（はな）して、時々（ときどき）失敗（しっぱい）する生活（せいかつ）。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          それ、いい夢だね。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          じゃあ、今日（きょう）はその第一日目（だいいちにちめ）だね。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          うん、そうかも。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          （店員（てんいん）に）すみません、注文（ちゅうもん）お願いします。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          今日は楽（たの）しくなりそう。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          もう楽（たの）しいよ。だって、君（きみ）が目（め）の前（まえ）にいるから。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          えへへ。あ、パスタ来（き）たよ。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          わあ、おいしそう。香（かお）りもいいね。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          ありがとう。これ、得意（とくい）な料理（りょうり）なんだ。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          へえ、料理（りょうり）が得意（とくい）なの？
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          うん。母（はは）から教（おそ）わったから。昨年（きょうねん）はパスタにはまってて。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          いいね。僕（ぼく）も食（た）べてみたいな。今度（こんど）作（つく）ってくれる？
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          もちろん。今度（こんど）の休日（きゅうじつ）にでも。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          マジで？楽（たの）しみだな。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          ところで、君（きみ）は何（なに）が得意（とくい）？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          そうだね。僕（ぼく）は運動（うんどう）かな。サッカーとか走（はし）るのが好き（すき）。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          あ、だから筋肉（きんにく）なんだ。納得（なっとく）。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          （笑）そう。でも、一番（いちばん）得意（とくい）なのは、君（きみ）を笑（わら）わせることかな。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          あ、何（なに）それ。照（てれ）るじゃん。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          本当（ほんとう）だよ。君（きみ）の笑顔（えがお）が、一番（いちばん）きれい。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          もう。そういうのいいから。でも、嬉（うれ）しい。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          ところで、将来（しょうらい）のこと考（かんが）えたことある？
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          うーん、まだあんまり。でも、好（す）きなことを仕事（しごと）にしたいな。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          いいね。そういう人（ひと）、好（す）きだ。夢（ゆめ）を持（も）ってるから。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          君（きみ）は仕事（しごと）、楽（たの）しい？
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          うん。大変（たいへん）なこともあるけど、やりがい（かい）がある。新（あたら）しい技術（ぎじゅつ）を学（まな）ぶのが面白（おもしろ）い。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          そっか。頑張（がんば）ってるんだ。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          ありがとう。でも、君（きみ）のサポートがあれば、もっと頑張（がんば）れる気（き）がする。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          もちろん。応援（おうえん）するよ。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          ありがとう。あ、ステーキも来（き）たかな。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          本当（ほんとう）だ。おいしそう。食（た）べましょう。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          いただきます。乾杯（かんぱい）？
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          乾杯（かんぱい）。これからも、一緒（いっしょ）にいようね。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          当然（とうぜん）だよ。君（きみ）なしで、どうやって生活（せいかつ）するんだ。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          （笑）完全（かんぜん）に頼（たよ）ってるんだね。
+        </div>
+      </div>
+
+      <!-- Maher -->
+      <div class="message maher">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png" alt="Maher" /></div>
+        <div class="bubble">
+          <div class="name">Maher</div>
+          そうだね。君（きみ）は僕（ぼく）の幸（しあわ）せ。
+        </div>
+      </div>
+
+      <!-- Ai -->
+      <div class="message ai">
+        <div class="avatar"><img src="http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png" alt="Ai" /></div>
+        <div class="bubble">
+          <div class="name">Ai</div>
+          私（わたし）も。ずっと一緒（いっしょ）にいたい。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
