@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yama</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 800px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      display: flex;
+      align-items: flex-end;
+      max-width: 80%;
+    }
+
+    .message.maher {
+      align-self: flex-start;
+    }
+
+    .message.ai {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ddd;
+      flex-shrink: 0;
+      margin: 0 10px;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bubble {
+      background: #eef1f4;
+      padding: 12px 16px;
+      border-radius: 16px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .message.ai .bubble {
+      background: #e8f5ff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.maher .bubble {
+      border-bottom-left-radius: 4px;
+    }
+
+    .name {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      .chat-container {
+        padding: 14px;
+      }
+
+      .message {
+        max-width: 100%;
+      }
+
+      .bubble {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat" id="chat-messages"></div>
+  </div>
+
+  <script>
+    const AVATARS = {
+      maher: "http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screen-Shot-2021-03-03-at-9.36.30.png",
+      ai: "http://xs932720.xsrv.jp/meguri/wp-content/uploads/2026/01/Screenshot-2026-01-25-at-19.40.06.png"
+    };
+
+
+
+    const messages = [
+      { speaker: "maher", text: "もしもし、今、時間（じかん）ある？" },
+      { speaker: "ai", text: "え、今？何（なに）かあった？" },
+      { speaker: "maher", text: "いや、大変（たいへん）なことじゃなくて。実（じつ）は、山梨（やまなし）に行（い）きたいんだけど、一緒（いっしょ）に来（こ）ない？" },
+      { speaker: "ai", text: "山梨？え、急（きゅう）だね。いつのこと？" },
+      { speaker: "maher", text: "来週（らいしゅう）の土曜日（どようび）。一泊（いっぱく）で。" },
+      { speaker: "ai", text: "来週？ちょっと待（ま）ってよ。今、何日（なんにち）か分（わ）かんないんだけど。" },
+      { speaker: "maher", text: "（笑）スマホ見（み）てみろよ。" },
+      { speaker: "ai", text: "あ、ほんとだ。でも、来週（らいしゅう）か…。計画（けいかく）、立（た）てた？" },
+      { speaker: "maher", text: "いや、まだ何（なに）も決（き）めてない。だから、君（きみ）と一緒（いっしょ）に考（かんが）えたいんだ。" },
+      { speaker: "ai", text: "え、それ、責任（せきにん）重（おも）すぎない？" },
+      { speaker: "maher", text: "大丈夫（だいじょうぶ）。君（きみ）がいれば、どこだって楽（たの）しいから。" },
+      { speaker: "ai", text: "もう、そういうのいいから。でも、山梨（やまなし）で何（なに）したいわけ？" },
+      { speaker: "maher", text: "富士山（ふじさん）を見（み）たい。それと、温泉（おんせん）に浸（つか）りたい。あ、あとぶどう狩（がり）とか。" },
+      { speaker: "ai", text: "ぶどう狩？今、時期（じき）なの？" },
+      { speaker: "maher", text: "えっ、知（し）らないの？八月（はちがつ）から十月（じゅうがつ）がぶどうの季節（きせつ）だよ。" },
+      { speaker: "ai", text: "あ、そっか。でも、富士山（ふじさん）も温泉（おんせん）も、どこでも見（み）えるじゃん。山梨（やまなし）限定（げんてい）？" },
+      { speaker: "maher", text: "違（ちが）う！山梨（やまなし）の温泉（おんせん）は特（とく）別（べつ）なんだ。君（きみ）と一緒（いっしょ）に浸（つか）りたくて。" },
+      { speaker: "ai", text: "え？ちょっと待（ま）ってよ。それ、何（なに）ですか、怪（あや）しいんですけど。" },
+      { speaker: "maher", text: "（笑）怪（あや）しくない！純粋（じゅんすい）に温泉（おんせん）が好（す）きなんだよ。" },
+      { speaker: "ai", text: "へえ…。筋肉（きんにく）のため？" },
+      { speaker: "maher", text: "あ、そっか。筋肉（きんにく）も回復（かいふく）するし。いいね。" },
+      { speaker: "ai", text: "本気（ほんき）で言（い）ってるの？" },
+      { speaker: "maher", text: "もちろん。で、ぶどう狩（がり）のあとは、フルーツ公園（こうえん）に行（い）こうぜ。" },
+      { speaker: "ai", text: "フルーツ公園？" },
+      { speaker: "maher", text: "うん。いろんなフルーツがあって、景色（けしき）も綺麗（きれい）らしいよ。" },
+      { speaker: "ai", text: "あ、いいね。でも、食（た）べてばかりじゃん。他（ほか）にも何（なに）かあるの？" },
+      { speaker: "maher", text: "あるあるある。昇仙峡（しょうせんきょう）という渓谷（けいこく）があるんだ。川（かわ）が綺麗（きれい）で、歩（ある）くのが気持（きも）ちいいらしい。" },
+      { speaker: "ai", text: "歩（ある）くのは、いいけど。足（あし）、痛（いた）くなりそう。" },
+      { speaker: "maher", text: "大丈夫（だいじょうぶ）。疲（つか）れたら、俺（おれ）が背中（せなか）を押（お）すから。" },
+      { speaker: "ai", text: "それ、サポートじゃなくて、ただ押（お）してるだけじゃん。（笑）" },
+      { speaker: "maher", text: "愛（あい）のサポートだよ。" },
+      { speaker: "ai", text: "もう。でも、いい計画（けいかく）だね。泊（と）まるところは？" },
+      { speaker: "maher", text: "そこだよ。いい宿（やど）を探（さが）してるんだけど。君（きみ）の好（す）きなタイプ、何（なに）？" },
+      { speaker: "ai", text: "タイプって何（なに）ですか。宿（やど）のタイプ？（笑）" },
+      { speaker: "maher", text: "そう。和室（わしつ）がいい？洋室（ようしつ）？それとも、露天風呂（ろてんぶろ）付き（つき）？" },
+      { speaker: "ai", text: "えーと、露天風呂（ろてんぶろ）付き（つき）がいいな。贅沢（ぜいたく）かな？" },
+      { speaker: "maher", text: "贅沢（ぜいたく）じゃない。君（きみ）のためだったら、何（なに）でもする。お金（かね）があればね。" },
+      { speaker: "ai", text: "あ、お金（かね）がない話（はなし）出（で）た。（笑）" },
+      { speaker: "maher", text: "いや、ボーナスが入（はい）ったから大丈夫（だいじょうぶ）。思（おも）いっきり、楽（たの）しもうぜ。" },
+      { speaker: "ai", text: "マジで？よかった。では、露天風呂（ろてんぶろ）付き（つき）の高級（こうきゅう）宿（やど）で。（笑）" },
+      { speaker: "maher", text: "いいね。で、朝食（ちょうしょく）は何（なに）を食（た）べたい？" },
+      { speaker: "ai", text: "えっ、もう食（た）べることの話（はなし）？山梨（やまなし）着（つ）いてないよ。" },
+      { speaker: "maher", text: "だって、君（きみ）の食（た）べる様子（ようす）を想像（そうぞう）するのが好（す）きなんだ。" },
+      { speaker: "ai", text: "キモい。（笑）でも、朝食（ちょうしょく）は、山梨（やまなし）のおいしい野菜（やさい）が食（た）べたい。" },
+      { speaker: "maher", text: "いいね。野菜（やさい）。君（きみ）も野菜（やさい）並（なみ）に新鮮（しんせん）だ。" },
+      { speaker: "ai", text: "何（なに）ですか、それ。意味（いみ）、分（わ）からない。でも、気（き）持（も）ち悪（わる）い。" },
+      { speaker: "maher", text: "（笑）新鮮（しんせん）で、綺麗（きれい）で、おいしいってことだよ。」" },
+      { speaker: "ai", text: "あ、食べ物（たべもの）扱（あつか）いされてる。（笑）" },
+      { speaker: "maher", text: "言（い）い方（かた）、悪（わる）かった。でも、本当（ほんとう）のことだよ。" },
+      { speaker: "ai", text: "もう。ところで、昼食（ちゅうしょく）は？" },
+      { speaker: "maher", text: "昼食（ちゅうしょく）は、地元（じもと）の食堂（しょくどう）で、ほうとう（麺料理（めんりょうり））を食（た）べたい。" },
+      { speaker: "ai", text: "ほうとう？何（なに）ですか。ほうとう。" },
+      { speaker: "maher", text: "山梨（やまなし）の有名（ゆうめい）な料理（りょうり）だ。太（ふと）い麺（めん）で、野菜（やさい）がいっぱい入（はい）った味噌（みそ）汁（しる）みたいなやつ。" },
+      { speaker: "ai", text: "あ、おいしそう。でも、また食べ物（たべもの）？この旅行（りょこう）、食べ物（たべもの）ばっかりだ。" },
+      { speaker: "maher", text: "だって、食べ物（たべもの）がおいしければ、それで十分（じゅうぶん）な旅行（りょこう）じゃん。」" },
+      { speaker: "ai", text: "あ、そっか。では、食べ物（たべもの）三昧（ざんまい）の旅行（りょこう）だね。" },
+      { speaker: "maher", text: "そう。と、景色（けしき）も楽（たの）しむ。で、最後（さいご）に、君（きみ）の笑顔（えがお）も楽（たの）しむ。完璧（かんぺき）だ。" },
+      { speaker: "ai", text: "完璧（かんぺき）じゃなくて、ただ、好（す）きなことばっかり、言（い）ってるだけじゃん。" },
+      { speaker: "maher", text: "そうかな？でも、全部（ぜんぶ）、君（きみ）のことが第一（だいいち）だよ。食べ物（たべもの）も景色（けしき）も。" },
+      { speaker: "ai", text: "あ、まじですか。食べ物（たべもの）より、俺の方（ほう）？" },
+      { speaker: "maher", text: "食べ物（たべもの）が好（す）きだから、君（きみ）と一緒（いっしょ）に食べ物（たべもの）を食（た）べたいんだ。" },
+      { speaker: "ai", text: "あ、そういうことね。わかった。では、来週（らいしゅう）、山梨（やまなし）に行（い）きましょう。" },
+      { speaker: "maher", text: "マジで？約束（やくそく）だぞ。破（やぶ）ったら、罰ゲーム（ばつげーむ）な。" },
+      { speaker: "ai", text: "何（なに）の罰ゲーム（ばつげーむ）？" },
+      { speaker: "maher", text: "僕（ぼく）のために、毎日（まいにち）、ご飯（はん）を作（つく）ってもらう。一年間（いちねんかん）。" },
+      { speaker: "ai", text: "え、一年間（いちねんかん）？長（なが）すぎ。（笑）" },
+      { speaker: "maher", text: "でも、破（やぶ）らないから、大丈夫（だいじょうぶ）。僕（ぼく）は、約束（やくそく）は大事（だいじ）にする派（は）だから。" },
+      { speaker: "ai", text: "へえ、えらい。では、こっちも約束（やくそく）する。来週（らいしゅう）、絶対（ぜったい）に行（い）く。" },
+      { speaker: "maher", text: "ありがとう。あ、あと一つ、大事（だいじ）なことがある。" },
+      { speaker: "ai", text: "何（なに）？" },
+      { speaker: "maher", text: "温泉（おんせん）から上（あ）がって、君（きみ）の顔（かお）に化粧水（けしょうすい）を塗（ぬ）る手伝（てつだ）いをさせてほしい。" },
+      { speaker: "ai", text: "何（なに）ですか、それ。（笑）キモい。" },
+      { speaker: "maher", text: "違（ちが）う！君（きみ）の肌（はだ）が綺麗（きれい）だから、もっと綺麗（きれい）にしたいんだ。" },
+      { speaker: "ai", text: "それ、スキンケアじゃなくて、ただのセクハラだと思（おも）う。（笑）" },
+      { speaker: "maher", text: "そっか。じゃあ、遠（とお）くから、君（きみ）が綺麗（きれい）になっていく様子（ようす）を見（み）てるだけにしよう。" },
+      { speaker: "ai", text: "それ、ストーカーじゃん。（笑）" },
+      { speaker: "maher", text: "何（なに）でもいいから、君（きみ）を見（み）ていたい。" },
+      { speaker: "ai", text: "もう、本当（ほんとう）に。でも、可愛（かわい）い。" },
+      { speaker: "maher", text: "ありがとう。あ、それと、夜間（やかん）は何（なに）をしたい？」" },
+      { speaker: "ai", text: "夜間（やかん）？" },
+      { speaker: "maher", text: "うん。夜（よる）のホテルで、何（なに）をして過（す）ごしたい？" },
+      { speaker: "ai", text: "あ、普通（ふつう）のこと考（かんが）えてましたけど。映画（えいが）を見（み）るとか、トランプをするとか。" },
+      { speaker: "maher", text: "あ、楽（たの）しそう。僕（ぼく）は、君（きみ）の話（はなし）を聞（き）きたい。何（なに）を考（かんが）えてるのか、何（なに）が好（す）きなのか。もっと知（し）りたい。" },
+      { speaker: "ai", text: "あ、そっか。いいね。では、夜（よる）は、延々（えんえん）と話（はな）す。（笑）" },
+      { speaker: "maher", text: "最高（さいこう）だ。朝（あさ）まで話（はな）してもいい。」" },
+      { speaker: "ai", text: "そんなに話（はな）すことないよ。（笑）" },
+      { speaker: "maher", text: "でも、君（きみ）の話（はなし）は、何（なに）度（ど）聞（き）いても飽（あ）きない。" },
+      { speaker: "ai", text: "本当（ほんとう）ですか。では、頑張（がんば）って面白（おもしろ）い話（はなし）を考（かんが）えておきます。" },
+      { speaker: "maher", text: "面白（おもしろ）い話（はなし）じゃなくて、本当（ほんとう）のこと、教（おし）えてほしい。" },
+      { speaker: "ai", text: "本当（ほんとう）のこと？" },
+      { speaker: "maher", text: "うん。僕（ぼく）のことを、どう思（おも）ってるのか。」" },
+      { speaker: "ai", text: "あ…。そっか。では、来週（らいしゅう）、温泉（おんせん）に浸（つか）りながら、話（はな）します。" },
+      { speaker: "maher", text: "本当（ほんとう）か。楽（たの）しみだ。ありがとう。" },
+      { speaker: "ai", text: "こちらこそ。では、来週（らいしゅう）、富士山（ふじさん）で会（あ）いましょう。" },
+      { speaker: "maher", text: "うん。約束（やくそく）だ。絶対（ぜったい）に行（い）く。" },
+      { speaker: "ai", text: "では、今週（こんしゅう）のうちに、宿（やど）を予約（よやく）しておいてね。」" },
+      { speaker: "maher", text: "任（まか）せろ。今夜（こんや）、探（さが）す。高級（こうきゅう）宿（やど）だ。" },
+      { speaker: "ai", text: "あ、その前（まえ）に、予算（よさん）の相談（そうだん）、しようよ。（笑）" },
+      { speaker: "maher", text: "予算（よさん）？君（きみ）のためなら、予算（よさん）無視（むし）。" },
+      { speaker: "ai", text: "それ、危険（きけん）な考（かんが）え方（かた）ですよ。（笑）" },
+      { speaker: "maher", text: "でも、本当（ほんとう）のことだ。では、明日（あした）、詳（くわ）しく計画（けいかく）を立（た）てようぜ。" },
+      { speaker: "ai", text: "了解（りょうかい）。では、明日（あした）、電話（でんわ）します。" },
+      { speaker: "maher", text: "楽（たの）しみに待（ま）ってる。では、おやすみなさい。」" },
+      { speaker: "ai", text: "おやすみなさい。来週（らいしゅう）のために、早（はや）く寝（ね）よう。" },
+      { speaker: "maher", text: "了解（りょうかい）。君（きみ）の美容（びよう）のために。また明日（あした）。" },
+      { speaker: "ai", text: "えへへ。また明日（あした）。" }
+    ];
+
+    const chatContainer = document.getElementById("chat-messages");
+
+    messages.forEach(msg => {
+      const messageDiv = document.createElement("div");
+      messageDiv.className = `message ${msg.speaker}`;
+
+      const avatarDiv = document.createElement("div");
+      avatarDiv.className = "avatar";
+      const img = document.createElement("img");
+      img.src = AVATARS[msg.speaker];
+      img.alt = msg.speaker.charAt(0).toUpperCase() + msg.speaker.slice(1);
+      avatarDiv.appendChild(img);
+
+      const bubbleDiv = document.createElement("div");
+      bubbleDiv.className = "bubble";
+
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "name";
+      nameDiv.textContent = msg.speaker.charAt(0).toUpperCase() + msg.speaker.slice(1);
+
+      bubbleDiv.appendChild(nameDiv);
+      bubbleDiv.appendChild(document.createTextNode(msg.text));
+
+      messageDiv.appendChild(avatarDiv);
+      messageDiv.appendChild(bubbleDiv);
+
+      chatContainer.appendChild(messageDiv);
+    });
+  </script>
+</body>
+</html>
